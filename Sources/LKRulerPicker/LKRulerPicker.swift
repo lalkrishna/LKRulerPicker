@@ -1,3 +1,7 @@
-struct LKRulerPicker {
-    var text = "Hello, World!"
+public struct LKRulerPicker {
+    public var text = "Hello, World!"
+    
+    public init() {
+        
+    }
 }
