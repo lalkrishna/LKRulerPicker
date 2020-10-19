@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NQS-fR-CA5" customClass="LKRulerPicker" customModule="LKRulerPicker">
-                                <rect key="frame" x="97" y="792" width="220" height="70"/>
+                                <rect key="frame" x="97" y="692" width="220" height="70"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="tintColor" white="0.0" alpha="0.5" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -43,9 +43,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="NQS-fR-CA5" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="6it-yn-Wo2"/>
                             <constraint firstItem="2A9-9N-rqT" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="32" id="JgQ-n9-INd"/>
                             <constraint firstItem="TCH-cD-f9v" firstAttribute="top" secondItem="2A9-9N-rqT" secondAttribute="bottom" constant="36.5" id="Siu-Gx-RV2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="NQS-fR-CA5" secondAttribute="bottom" constant="100" id="as6-Lo-JZN"/>
                             <constraint firstItem="2A9-9N-rqT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="32" id="gY2-iC-udq"/>
                             <constraint firstItem="TCH-cD-f9v" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="iLu-xd-byQ"/>
                             <constraint firstItem="NQS-fR-CA5" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="naK-bv-v95"/>

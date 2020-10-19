@@ -14,16 +14,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var weightPicker: LKRulerPicker!
     
     private lazy var heightPicker: LKRulerPicker = {
-        let heightMetrics = LKRulerPickerConfiguration.Metrics(
-            minimumValue: 100,
-            defaultValue: 155,
-            maximumValue: 250,
-            divisions: 5,
-            fullLineSize: 40,
-            midLineSize: 32,
-            smallLineSize: 32)
-        $0.configuration = LKRulerPickerConfiguration(scrollDirection: .vertical, alignment: .start, metrics: heightMetrics)
         $0.dataSource = self
+        $0.delegate = self
         $0.tintColor = UIColor.black.withAlphaComponent(0.5)
         $0.highlightLineColor = .black
         $0.highlightTextColor = .black
@@ -34,16 +26,14 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         addHeightPicker()
-//        configureWeightPicker()
-        weightPicker.dataSource = self
-        weightPicker.backgroundColor = .red
+        configureWeightPicker()
+//        weightPicker.dataSource = self
     }
     
     private func addHeightPicker() {
+//        let _ = view
         view.addSubview(heightPicker)
         heightPicker.translatesAutoresizingMaskIntoConstraints = false
-//        heightPicker.backgroundColor = .red
-        
         
         NSLayoutConstraint.activate([
             heightPicker.topAnchor.constraint(equalTo: heightPicker.superview!.topAnchor, constant: 200),
@@ -54,7 +44,17 @@ class ViewController: UIViewController {
         
 //        heightPicker.layoutSubviews()
 //        heightPicker.reload()
-//        heightPicker.configuration = heightPicker.configuration
+        heightPicker.layoutIfNeeded()
+        
+        let heightMetrics = LKRulerPickerConfiguration.Metrics(
+            minimumValue: 100,
+            defaultValue: 155,
+            maximumValue: 250,
+            divisions: 5,
+            fullLineSize: 40,
+            midLineSize: 32,
+            smallLineSize: 32)
+        heightPicker.configuration = LKRulerPickerConfiguration(scrollDirection: .vertical, alignment: .start, metrics: heightMetrics)
     }
 
     private func configureWeightPicker() {
@@ -70,6 +70,7 @@ class ViewController: UIViewController {
         weightPicker.font = UIFont(name: "HelveticaNeue-UltraLight", size: 12)!
         weightPicker.highlightFont = UIFont(name: "AmericanTypewriter-Bold", size: 24)!
         weightPicker.dataSource = self
+        weightPicker.delegate = self
     }
     
     // MARK: - Actions
@@ -77,9 +78,15 @@ class ViewController: UIViewController {
     @IBAction func didTapPrintButton(_ sender: UIButton) {
         let weightText = rulerPicker(weightPicker, highlightTitleForIndex: weightPicker.highlightedIndex)
         let heightText = rulerPicker(heightPicker, highlightTitleForIndex: heightPicker.highlightedIndex)
-        debugPrint("\(weightText ?? "nil"), \(heightText ?? "nil")")
+        label.text = "Weight: \(weightText ?? "nil"), Height: \(heightText ?? "nil")"
     }
     
+}
+
+extension ViewController: LKRulerPickerDelegate {
+    func rulerPicker(_ picker: LKRulerPicker, didSelectItemAtIndex index: Int) {
+        label.text = rulerPicker(picker, highlightTitleForIndex: index)
+    }
 }
 
 extension ViewController: LKRulerPickerDataSource {
@@ -91,7 +98,7 @@ extension ViewController: LKRulerPickerDataSource {
         case weightPicker:
             return "\(picker.configuration.metrics.minimumValue + index)"
         default:
-            return "N/A"
+            fatalError("Handler picker")
         }
         
     }
@@ -103,8 +110,7 @@ extension ViewController: LKRulerPickerDataSource {
         case weightPicker:
             return "\(picker.configuration.metrics.minimumValue + index) KG"
         default:
-            return "N/A"
+            fatalError("Handler picker")
         }
     }
 }
-

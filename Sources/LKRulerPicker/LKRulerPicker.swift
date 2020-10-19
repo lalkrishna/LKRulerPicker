@@ -229,9 +229,11 @@ public class LKRulerPicker: UIView {
             indicatorLine.frame.size = CGSize(width: configuration.metrics.fullLineSize, height: 2)
             switch configuration.alignment {
             case .start:
+                indicatorLine.frame.origin.x = 0
                 indicatorLabel.frame.origin.x = configuration.metrics.fullLineSize + configuration.lineAndLabelSpacing
             case .end:
                 indicatorLabel.frame.origin.x = configuration.metrics.fullLineSize + configuration.lineAndLabelSpacing
+                indicatorLine.frame.origin.x = indicatorLabel.frame.origin.x
                 
             }
         }
@@ -241,6 +243,7 @@ public class LKRulerPicker: UIView {
         let bgColor = backgroundColor ?? UIColor.white
         let tranparentWhite = bgColor.withAlphaComponent(0)
         indicatorLabelGradient.colors = [tranparentWhite.cgColor, bgColor.cgColor, bgColor.cgColor, tranparentWhite.cgColor]
+        
     }
     
     private func commonInit() {
@@ -279,17 +282,27 @@ public class LKRulerPicker: UIView {
             layout.scrollDirection = .vertical
 //            layout.itemSize = CGSize(width: bounds.width, height: 1)
         }
+        scrollToValue(configuration.metrics.defaultValue, animated: false)
     }
     
-    func setDefaultHeight(_ height: CGFloat) {
-//        configuration.metrics.defaultValue
-//        self.layoutSubviews()
-//        collectionView.reloadData()
-//        collectionView.layoutSubviews()
+    func scrollToValue(_ value: Int, animated: Bool = true) {
+//        setNeedsLayout()
+//        layoutIfNeeded()
+        layoutSubviews()
+        collectionView.reloadData()
+        collectionView.layoutSubviews()
         
-//        delegate?.selectedHeight(height: selectedCM, unit: .CM)
-//        let offset = CGPoint(x: selectedCM * cellWidthIncludingSpacing - collectionView.contentInset.left, y: -collectionView.contentInset.top)
-//        collectionView.setContentOffset(offset, animated: true)
+        let offset: CGPoint
+        let selected = CGFloat(value - configuration.metrics.minimumValue)
+        if configuration.isHorizontal {
+            offset = CGPoint(x: selected * cellWidthIncludingSpacing - collectionView.contentInset.left, y: 0)
+        } else {
+            offset = CGPoint(x: 0, y: selected * cellWidthIncludingSpacing - collectionView.contentInset.top)
+        }
+        
+        DispatchQueue.main.async {
+            self.collectionView.setContentOffset(offset, animated: animated)
+        }
     }
 }
 
@@ -310,8 +323,6 @@ extension LKRulerPicker: UICollectionViewDelegate, UICollectionViewDataSource, U
         cell.numberLabel.font = font
         cell.numberLabel.text = dataSource?.rulerPicker(self, titleForIndex: indexPath.row)
         cell.configure(indexPath.row, using: configuration)
-        //        cell.lineHeight
-//        cell.backgroundColor = .blue
         return cell
     }
     
@@ -362,8 +373,9 @@ extension LKRulerPicker: UIScrollViewDelegate {
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let visibleRect = CGRect(origin: collectionView.contentOffset, size: collectionView.bounds.size)
         let visiblePoint = CGPoint(x: visibleRect.midX, y: visibleRect.midY)
-        if collectionView.indexPathForItem(at: visiblePoint) != nil {
-//            visibleIndexPath.row
+        if let indexPath = collectionView.indexPathForItem(at: visiblePoint) {
+            // let _ = collectionView.cellForItem(at: indexPath) as? LKRulerLineCell
+            delegate?.rulerPicker(self, didSelectItemAtIndex: indexPath.row)
         }
     }
     
@@ -395,10 +407,6 @@ private class LKRulerLineCell: UICollectionViewCell {
     var lineHeight: LineHeight = .full
     
     var config: LKRulerPickerConfiguration = .default
-    
-    private var labelHeight: CGFloat {
-        bounds.height * 40 / 100 // 40% of the height
-    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
