@@ -219,7 +219,7 @@ public class LKRulerPicker: UIView {
                 indicatorLabel.frame.origin.y = indicatorLine.frame.origin.y + indicatorLine.frame.size.height + configuration.lineAndLabelSpacing
             case .end:
                 indicatorLine.frame.origin.y = bounds.height - indicatorLine.frame.size.height
-                indicatorLabel.frame.origin.y = bounds.height - indicatorLine.frame.size.height - configuration.lineAndLabelSpacing - indicatorLabel.frame.size.height
+                indicatorLabel.frame.origin.y = indicatorLine.frame.origin.y - configuration.lineAndLabelSpacing - indicatorLabel.frame.size.height
             }
             
         } else {
@@ -305,12 +305,6 @@ public class LKRulerPicker: UIView {
         }
     }
 }
-
-//class LKRulePickerCollection {
-//    init() {
-//
-//    }
-//}
 
 extension LKRulerPicker: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {

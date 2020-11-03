@@ -39,7 +39,7 @@ class ViewController: UIViewController {
             heightPicker.topAnchor.constraint(equalTo: heightPicker.superview!.topAnchor, constant: 200),
             heightPicker.leftAnchor.constraint(equalTo: heightPicker.superview!.leftAnchor),
             heightPicker.widthAnchor.constraint(equalToConstant: 120),
-            heightPicker.heightAnchor.constraint(equalToConstant: 200)
+            heightPicker.heightAnchor.constraint(equalToConstant: 235)
         ])
         
 //        heightPicker.layoutSubviews()
@@ -47,28 +47,28 @@ class ViewController: UIViewController {
         heightPicker.layoutIfNeeded()
         
         let heightMetrics = LKRulerPickerConfiguration.Metrics(
-            minimumValue: 100,
-            defaultValue: 155,
-            maximumValue: 250,
+            minimumValue: 50,
+            defaultValue: 150,
+            maximumValue: 300,
             divisions: 5,
-            fullLineSize: 40,
-            midLineSize: 32,
-            smallLineSize: 32)
+            fullLineSize: 38,
+            midLineSize: 28,
+            smallLineSize: 28)
         heightPicker.configuration = LKRulerPickerConfiguration(scrollDirection: .vertical, alignment: .start, metrics: heightMetrics)
     }
 
     private func configureWeightPicker() {
         let weightMetrics = LKRulerPickerConfiguration.Metrics(
-            minimumValue: 35,
-            defaultValue: 55,
-            maximumValue: 150,
-            divisions: 5,
+            minimumValue: 0,
+            defaultValue: 50,
+            maximumValue: 250,
+            divisions: 10,
             fullLineSize: 40,
             midLineSize: 32,
-            smallLineSize: 32)
+            smallLineSize: 22)
         weightPicker.configuration = LKRulerPickerConfiguration(scrollDirection: .horizontal, alignment: .end, metrics: weightMetrics)
-        weightPicker.font = UIFont(name: "HelveticaNeue-UltraLight", size: 12)!
-        weightPicker.highlightFont = UIFont(name: "AmericanTypewriter-Bold", size: 24)!
+        weightPicker.font = UIFont(name: "AmericanTypewriter-Bold", size: 12)!
+        weightPicker.highlightFont = UIFont(name: "AmericanTypewriter-Bold", size: 18)!
         weightPicker.dataSource = self
         weightPicker.delegate = self
     }
