@@ -1,25 +1,25 @@
 # LKRulerPicker
 
-A description of this package.
+Customizable Ruler picker
 
 # Installation
 
-## Swift Package Manager
+### Swift Package Manager
 
-**File / Swift Packages / Add Package Dependency...** and enter package repository URL: **https://github.com/lalkrishna/LKRulerPicker** and follow the instructions.
+**File / Swift Packages / Add Package Dependency...** and enter package repository URL: ```https://github.com/lalkrishna/LKRulerPicker``` and follow the instructions.
 
-## Manually
+### Manually
 Clone the repo and Drag and drop to your project (it will be added as a package)
 OR
-You can just copy the file: [LKRulerPicker](https://github.com/lalkrishna/LKRulerPicker)/[Sources](https://github.com/lalkrishna/LKRulerPicker/tree/main/Sources)/[LKRulerPicker](https://github.com/lalkrishna/LKRulerPicker/tree/main/Sources/LKRulerPicker)/[LKRulerPicker.swift](https://github.com/lalkrishna/LKRulerPicker/blob/main/Sources/LKRulerPicker/LKRulerPicker.swift "LKRulerPicker.swift")
+You can just copy the file: Sources/LKRulerPicker/[LKRulerPicker.swift](https://github.com/lalkrishna/LKRulerPicker/blob/main/Sources/LKRulerPicker/LKRulerPicker.swift "LKRulerPicker.swift")
 
 # Usage
 
-## Via Storyboard
+### Via Storyboard
 Create UIView
 Assign class and Module as: **LKRulerPicker**
 
-## Programatically
+### Programatically
 
 ```swift
 import LKRulerPicker
