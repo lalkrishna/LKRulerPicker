@@ -48,9 +48,11 @@ let heightMetrics = LKRulerPickerConfiguration.Metrics(
             fullLineSize: 38,
             midLineSize: 28,
             smallLineSize: 28)
-heightPicker.configuration = LKRulerPickerConfiguration(scrollDirection: .vertical, 
-                                                        alignment: .start, 
-                                                        metrics: heightMetrics)
+heightPicker.configuration = LKRulerPickerConfiguration(
+            scrollDirection: .vertical,
+            alignment: .start,
+            metrics: heightMetrics,
+            isHapticsEnabled: false)
 ```
 
 ### Delegation/Datasource
