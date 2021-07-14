@@ -8,12 +8,12 @@
 
 import UIKit
 
-public protocol LKRulerPickerDataSource: class {
+public protocol LKRulerPickerDataSource: AnyObject {
     func rulerPicker(_ picker: LKRulerPicker, titleForIndex index: Int) -> String?
     func rulerPicker(_ picker: LKRulerPicker, highlightTitleForIndex index: Int) -> String?
 }
 
-public protocol LKRulerPickerDelegate: class {
+public protocol LKRulerPickerDelegate: AnyObject {
     func rulerPicker(_ picker: LKRulerPicker, didSelectItemAtIndex index: Int)
 }
 
@@ -86,15 +86,18 @@ public struct LKRulerPickerConfiguration {
     public var lineSpacing: CGFloat = 10
     public var lineAndLabelSpacing: CGFloat = 6
     public var metrics: Metrics = .default
+    /// Enabling Haptic Feedbacks to Supporting devices. Default value is `true`.
+    public var isHapticsEnabled: Bool = true
     
     static var `default`: LKRulerPickerConfiguration { LKRulerPickerConfiguration() }
     
-    public init(scrollDirection: LKRulerPickerConfiguration.Direction = .horizontal, alignment: LKRulerPickerConfiguration.Alignment = .end, lineSpacing: CGFloat = 10, lineAndLabelSpacing: CGFloat = 6, metrics: LKRulerPickerConfiguration.Metrics = .default) {
+    public init(scrollDirection: LKRulerPickerConfiguration.Direction = .horizontal, alignment: LKRulerPickerConfiguration.Alignment = .end, lineSpacing: CGFloat = 10, lineAndLabelSpacing: CGFloat = 6, metrics: LKRulerPickerConfiguration.Metrics = .default, isHapticsEnabled: Bool = true) {
         self.scrollDirection = scrollDirection
         self.alignment = alignment
         self.lineSpacing = lineSpacing
         self.lineAndLabelSpacing = lineAndLabelSpacing
         self.metrics = metrics
+        self.isHapticsEnabled = isHapticsEnabled
     }
     
     
@@ -190,6 +193,9 @@ public class LKRulerPicker: UIView {
             return itemSize.height + layout.minimumInteritemSpacing
         }
     }
+    
+    @available(iOS 10.0, *)
+    lazy var feedbackGenerator : UISelectionFeedbackGenerator? = nil
     
     // MARK: - Init
     
@@ -347,6 +353,13 @@ extension LKRulerPicker: UIScrollViewDelegate {
         targetContentOffset.pointee = offset
     }
     
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        if #available(iOS 10.0, *), configuration.isHapticsEnabled {
+            feedbackGenerator = UISelectionFeedbackGenerator()
+            feedbackGenerator?.prepare()
+        }
+    }
+    
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset
         let contentInset = scrollView.contentInset
@@ -359,9 +372,15 @@ extension LKRulerPicker: UIScrollViewDelegate {
             let roundedIndex = round((offset.y + contentInset.top) / cellWidthIncludingSpacing)
             index = max(0, min(itemsCount, Int(roundedIndex)))
         }
-        highlightedIndex = index
-        indicatorLabel.text = dataSource?.rulerPicker(self, highlightTitleForIndex: index)
-        indicatorLabel.sizeToFit()
+        if highlightedIndex != index {
+            if #available(iOS 10.0, *), configuration.isHapticsEnabled {
+                feedbackGenerator?.selectionChanged()
+                feedbackGenerator?.prepare()
+            }
+            highlightedIndex = index
+            indicatorLabel.text = dataSource?.rulerPicker(self, highlightTitleForIndex: index)
+            indicatorLabel.sizeToFit()
+        }
     }
     
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -370,6 +389,9 @@ extension LKRulerPicker: UIScrollViewDelegate {
         if let indexPath = collectionView.indexPathForItem(at: visiblePoint) {
             // let _ = collectionView.cellForItem(at: indexPath) as? LKRulerLineCell
             delegate?.rulerPicker(self, didSelectItemAtIndex: indexPath.row)
+        }
+        if #available(iOS 10.0, *) {
+            feedbackGenerator = nil
         }
     }
     
