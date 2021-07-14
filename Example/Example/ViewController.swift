@@ -11,14 +11,18 @@ import LKRulerPicker
 class ViewController: UIViewController {
 
     @IBOutlet weak var label: UILabel!
+    
+    // Added Using Storyboard.
     @IBOutlet weak var weightPicker: LKRulerPicker!
     
+    // Added Programatically
     private lazy var heightPicker: LKRulerPicker = {
         $0.dataSource = self
         $0.delegate = self
         $0.tintColor = UIColor.black.withAlphaComponent(0.5)
         $0.highlightLineColor = .black
         $0.highlightTextColor = .black
+        $0.backgroundColor = .white
         return $0
     }(LKRulerPicker())
     
